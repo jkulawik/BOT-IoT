@@ -45,6 +45,18 @@ Zakładamy, że w innym wypadku scenariusz ten polegałby na znalezieniu IP w DM
 Pierwszym krokiem jest stworzenie maszyny wirtualnej zgodnie z z poniższym artykułem:
 https://raspberrytips.com/run-raspberry-in-virtual-machine/
 
-Maszynie nadano 8GB pamięci (rozmiar średniego rozmiaru karty SD) oraz 1GB RAM (zgodnie z jednym z tańszych modeli RPi).
+Maszynie nadano 1GB RAM (zgodnie z jednym z tańszych modeli RPi).
 
 Za pomocą generatora liczb losowych na hasło użytkownika wybrano nr. 20 (tj. "welcome") z [listy dwudziestu pięciu najpopularniejszych haseł roku 2019 wg. firmy Splashdata.](https://www.prweb.com/releases/what_do_password_and_president_trump_have_in_common_both_lost_ranking_on_splashdatas_annual_worst_passwords_list/prweb16794349.htm)
+
+Logowanie do bazy danych wykonywane jest za pomocą polecenia ```mysql -uroot -p```.
+Konto administratora Wordpress utworzono pod nazwą 'admin' oraz wg. wskazówek ustawiono "wystarczająco silne" hasło: 'Reks\o1997'
+W rejestracji wybrano email jednego z członków grupy. Zgodnie z założeniem, dane te nie zostaną wykorzystane w penteście o ile nie zostaną podczas niego znalezione zdalnie.
+
+## Skanowanie
+
+(COMING SOON)
+
+## Testowanie aplikacji internetowej
+
+W testowaniu wstrzyknięć SQL przydatna będzie [wiedza o budowie baz danych wordpress](https://wp-staging.com/docs/the-wordpress-database-structure/).
