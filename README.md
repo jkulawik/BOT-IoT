@@ -53,6 +53,10 @@ Logowanie do bazy danych wykonywane jest za pomocą polecenia ```mysql -uroot -p
 Konto administratora Wordpress utworzono pod nazwą 'admin' oraz wg. wskazówek ustawiono "wystarczająco silne" hasło: 'Reks\o1997'
 W rejestracji wybrano email jednego z członków grupy. Zgodnie z założeniem, dane te nie zostaną wykorzystane w penteście o ile nie zostaną podczas niego znalezione zdalnie.
 
+Dla ułatwienia testowania, w ustawieniach strony Wordpress (Settings/General) zmieniono adres URL na `http://rpi.bot`.
+Domyślne ustawienie `http://localhost` sprawiało bowiem problem z testowaniem na innych maszynach.
+Następnie w pliku `/etc/hosts/` (zarówno na maszynie do testowania jak i maszynie testowanej) dodano linijkę, która rozwiązuje adres IP testowanego systemu na nazwę `rpi.bot` (a raczej vice-versa).
+
 ## Skanowanie
 
 (COMING SOON)
