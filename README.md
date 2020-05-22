@@ -9,8 +9,7 @@ Grupa: J. Kulawik, W. Szałyga
 - Zapoznanie się z dostępnymi gotowymi rozwiązaniami usług sieciowych w IoT
 - Zapoznanie się ze specyfiką bezpieczeństwa w takich usługach
 - Zaznajomienie się z rozwiązaniami wirtualizacji IoT lub instalacją oprogramowania na hardwarze
-- Trening audytu
-- ...
+- Trening audytu środowiska bez celowo wystawionych podatności
 
 ## Zakres projektu
 - Przegląd oraz wybór oprogramowania do przetestowania z zakresu IoT 
@@ -21,7 +20,24 @@ Grupa: J. Kulawik, W. Szałyga
   * zintegrowane lub oddzielne od OS
   * maszyna wirtualna bądź rzeczywista instalacja na hardwarze  
 - Pentest wybranego rozwiązania wraz z raportem
-- ...
+
+Zakres rozszerzony zrealizowany podczas realizacji celów:
+
+- Tworzenie maszyny wirtualnej
+- Zaznajomienie z podstawami konfiguracji sieciowej serwera Apache oraz systemu Linux
+
+## Propozycja środowiska testowego
+
+Dokonano przeglądu technologii wirtualizacyjnych IoT. Ze względu na małą dostępność maszyn  wirtualnych IoT, zdecydowano się na stworzenie własnej za pomocą obrazu systemu operacyjnego.
+
+Proponowanym środowiskiem testowym jest wirtualny system Debian używany na płytkach Raspberry Pi - tzw. Raspbian.
+Zgodnie ze wspomnianym poniżej poradnikiem zostanie na nim zainstalowany serwer HTTP typu LAMP.
+
+> *P.S. Podczas dalszych badań odkryto technologię Docker oraz oparty na niej, dedykowany dla IoT system balenaOS. Mechanizmy wykorzystywane przez Dockera zdają się być rozwiązaniem bardzo bezpiecznym, dlatego testy aplikacji zbudowanej w kontenerze baleny mogą być ciekawym tematem na przyszłe projekty.*
+
+Test będzie przeprowadzony w stylu greybox - siłą rzeczy znane są pewne szcegóły środowiska (w szcególności elementy konfiguracji sieciowej).
+Nie będzie wykorzystywana wiedza na temat haseł oraz loginów - żeby je wykorzystać, muszą zostać wydobyte w trakcie testu.
+Ze względu na infrastrukturę sieciową maszyn wirtualnych, test ten odpowiada połączeniu się do sieci np. Wi-fi organizacji/właściciela oraz testowaniu znajdującego się w niej serwera.
 
 ## Scenariusz 
 
@@ -30,15 +46,6 @@ Pozostawione są domyślne opcje sugerowane przez popularny poradnik ze strony R
 https://projects.raspberrypi.org/en/projects/lamp-web-server-with-wordpress
 
 Sprawdzone zostanie bezpieczeństwo takiego rozwiązania, w tym instalowanej strony Wordpress.
-
-## Propozycja środowiska testowego
-
-Proponowanym środowiskiem testowym jest wirtualny system Debian używany na płytkach Raspberry Pi.
-Zgodnie ze wspomnianym wyżej poradnikiem zostanie na nim zainstalowany serwer.
-
-Po skonfigurowaniu środowiska, hasła, porty, etc. są "zapominane" - muszą być znalezione w trakcie pentestu.
-Wyjątkiem jest IP, które ze względu na pracę zespołową na maszynach wirtualnych nie będzie stałe.
-Zakładamy, że w innym wypadku scenariusz ten polegałby na znalezieniu IP w DMZ, którym byłaby sieć domowa testera maszyny wirtualnej.
 
 ## Przygotowania maszyny wirtualnej
 
@@ -59,7 +66,31 @@ Następnie w pliku `/etc/hosts/` (zarówno na maszynie do testowania jak i maszy
 
 ## Skanowanie
 
-(COMING SOON)
+Przeprowadzono skany TCP oraz UDP całej sieci. Jak można się było spodziewać, znaleziono jedynie usługę HTTP na porcie 80:
+
+```
+kali@kali:~/Desktop$ sudo nmap -sV -p-  192.168.56.133
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-05-22 06:33 EDT
+Nmap scan report for rpi.bot (192.168.56.133)
+Host is up (0.0021s latency).
+Not shown: 65534 closed ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+MAC Address: 00:0C:29:60:C2:44 (VMware)
+```                     
+Nieco mniej oczywista jest natomiast obecność kilku usług UDP:
+
+```
+kali@kali:~/Desktop$ sudo nmap -sU -F  192.168.56.133
+Nmap scan report for rpi.bot (192.168.56.133)
+Host is up (0.0012s latency).
+Not shown: 97 closed ports
+PORT     STATE         SERVICE
+68/udp   open|filtered dhcpc
+123/udp  open          ntp
+5353/udp open|filtered zeroconf
+MAC Address: 00:0C:29:60:C2:44 (VMware)
+```
 
 ## Testowanie aplikacji internetowej
 
