@@ -78,18 +78,59 @@ PORT   STATE SERVICE VERSION
 80/tcp open  http    Apache httpd 2.4.38 ((Debian))
 MAC Address: 00:0C:29:60:C2:44 (VMware)
 ```                     
-Nieco mniej oczywista jest natomiast obecność kilku usług UDP:
-
+Nieco mniej oczywista jest natomiast obecność wielu usług UDP:
 ```
-kali@kali:~/Desktop$ sudo nmap -sU -F  192.168.56.133
-Nmap scan report for rpi.bot (192.168.56.133)
-Host is up (0.0012s latency).
-Not shown: 97 closed ports
-PORT     STATE         SERVICE
-68/udp   open|filtered dhcpc
-123/udp  open          ntp
-5353/udp open|filtered zeroconf
-MAC Address: 00:0C:29:60:C2:44 (VMware)
+kali@kali:~/Desktop$ sudo nmap -sUV -F  192.168.56.133
+(...)
+PORT      STATE         SERVICE         VERSION
+53/udp    open|filtered domain
+67/udp    open|filtered dhcps
+68/udp    open|filtered dhcpc
+69/udp    open|filtered tftp
+80/udp    open|filtered http
+88/udp    open|filtered kerberos-sec
+111/udp   open|filtered rpcbind
+123/udp   open          ntp             NTP v4 (unsynchronized)
+135/udp   open|filtered msrpc
+137/udp   open|filtered netbios-ns
+139/udp   open|filtered netbios-ssn
+161/udp   open|filtered snmp
+177/udp   open|filtered xdmcp
+500/udp   open|filtered isakmp
+623/udp   open|filtered asf-rmcp
+626/udp   open|filtered serialnumberd
+996/udp   open|filtered vsinet
+999/udp   open|filtered applix
+1025/udp  open|filtered blackjack
+1028/udp  open|filtered ms-lsa
+1029/udp  open|filtered solid-mux
+1030/udp  open|filtered iad1
+1645/udp  open|filtered radius
+1646/udp  open|filtered radacct
+1718/udp  open|filtered h225gatedisc
+1719/udp  open|filtered h323gatestat
+1812/udp  open|filtered radius
+2000/udp  open|filtered cisco-sccp
+2222/udp  open|filtered msantipiracy
+2223/udp  open|filtered rockwell-csp2
+3283/udp  open|filtered netassistant
+3456/udp  open|filtered IISrpc-or-vat
+4444/udp  open|filtered krb524
+5353/udp  open|filtered zeroconf
+5632/udp  open|filtered pcanywherestat
+20031/udp open|filtered bakbonenetvault
+30718/udp open|filtered unknown
+31337/udp open|filtered BackOrifice
+32768/udp open|filtered omad
+32769/udp open|filtered filenet-rpc
+32815/udp open|filtered unknown
+49154/udp open|filtered unknown
+49181/udp open|filtered unknown
+49186/udp open|filtered unknown
+49192/udp open|filtered unknown
+49193/udp open|filtered unknown
+49194/udp open|filtered unknown
+49200/udp open|filtered unknown
 ```
 
 ## Testowanie aplikacji internetowej
