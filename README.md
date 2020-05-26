@@ -78,7 +78,17 @@ PORT   STATE SERVICE VERSION
 80/tcp open  http    Apache httpd 2.4.38 ((Debian))
 MAC Address: 00:0C:29:60:C2:44 (VMware)
 ```                     
-Nieco mniej oczywista jest natomiast obecność wielu usług UDP:
+Skan UDP zwrócił wiele portów typu filtrowane/otwarte. Biorąc pod uwagę, że wynik ten jest dla UDP zwracany kiedy brak jest odpowiedzi, z pewną dozą pewności można powiedzieć że usługi te w systemie nie działają. Jedny otwarty port to NTP:
+```
+kali@kali:~/Desktop$ sudo nmap -sUV -F  192.168.56.133
+(...)
+PORT      STATE         SERVICE         VERSION
+123/udp   open          ntp             NTP v4 (unsynchronized)
+```
+
+<details>
+  <summary>[Rozwiń listę wszystkich przeskanowanych portów]</summary>
+   
 ```
 kali@kali:~/Desktop$ sudo nmap -sUV -F  192.168.56.133
 (...)
@@ -132,6 +142,8 @@ PORT      STATE         SERVICE         VERSION
 49194/udp open|filtered unknown
 49200/udp open|filtered unknown
 ```
+</details>
+
 
 ## Testowanie aplikacji internetowej
 
