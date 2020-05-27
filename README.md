@@ -280,7 +280,110 @@ Sprawdzono również metody enumeracji oferowane przez narzędzie. Powiodła si�
 
 ## Pełzacz internetowy
 
-TBA 
+Stronę przeskanowano również za pomocą narzędzia *msfcrawler*.
+
+<details>
+<summary>Rozwiń mapę strony</summary>
+
+```
+[*] Target: rpi.bot Port: 80 Path: / SSL: 
+[*] >> [200] /
+[*] >> [200] /
+[*] >> [200] /about/
+[*] >> [200] /blog/
+[*] >> [200] /contact/
+[*] >> [200] /hello-world/
+[*] >> [200] /
+[*] >>> [Q] s=
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/images/header.jpg
+[*] >> [200] /feed/
+[*] >> [200] /comments/feed/
+[*] >> [200] /wp-includes/css/dist/block-library/style.min.css
+[*] >>> [Q] ver=5.4.1
+[*] >> [200] /wp-includes/css/dist/block-library/theme.min.css
+[*] >>> [Q] ver=5.4.1
+[*] >> [200] /wp-content/themes/twentyseventeen/style.css
+[*] >>> [Q] ver=20190507
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/css/blocks.css
+[*] >>> [Q] ver=20190105
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/css/colors-dark.css
+[*] >>> [Q] ver=20190408
+[*] >> [200] /wp-json/
+[*] >> [200] /xmlrpc.php
+[*] >>> [Q] rsd
+[*] >> [200] /wp-includes/wlwmanifest.xml
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2F
+[*] >> [200] /wp-includes/js/jquery/jquery.js
+[*] >>> [Q] ver=1.12.4-wp
+[*] >> [200] /wp-includes/js/jquery/jquery-migrate.min.js
+[*] >>> [Q] ver=1.4.1
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/js/skip-link-focus-fix.js
+[*] >>> [Q] ver=20161114
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/js/navigation.js
+[*] >>> [Q] ver=20161203
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/js/global.js
+[*] >>> [Q] ver=20190121
+[*] >> [200] /wp-content/themes/twentyseventeen/assets/js/jquery.scrollTo.js
+[*] >>> [Q] ver=2.1.2
+[*] >> [200] /wp-includes/js/wp-embed.min.js
+[*] >>> [Q] ver=5.4.1
+[*] >> [301] /
+[*] >>> [Q] p=7
+[301] Redirection to: http://rpi.bot/about/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fabout%2F
+[*] >> [200] /wp-content/uploads/2020/05/download.png
+[*] >> [301] /
+[*] >>> [Q] p=8
+[301] Redirection to: http://rpi.bot/contact/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fcontact%2F
+[*] >> [200] /author/admin/
+[*] >> [200] /tag/welcome/
+[*] >> [200] /hello-world/
+[*] >>> [Q] replytocom=1
+[*] >> [200] /wp-comments-post.php
+[*] >>> [D] author=&email=&url=&wp-comment-cookies-consent=yes&submit=Post%20Comment&comment_post_ID=1&comment_parent=0
+[*] >> [200] /hello-world/feed/
+[*] >> [301] /
+[*] >>> [Q] p=1
+[301] Redirection to: http://rpi.bot/hello-world/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fhello-world%2F
+[*] >> [200] /wp-includes/js/comment-reply.min.js
+[*] >>> [Q] ver=5.4.1
+[*] >> [200] /the-new-umoma-opens-its-doors-2/
+[*] >> [200] /a-homepage-section/
+[*] >> [200] /sample-page/
+[*] >> [200] /search/feed/rss2/
+[*] >> [200] /author/admin/feed/
+[*] >> [200] /tag/welcome/feed/
+[*] >> [200] /hello-world/
+[*] >> [200] /wp-comments-post.php
+[*] >>> [D] author=&email=&url=&wp-comment-cookies-consent=yes&submit=Post%20Comment&comment_post_ID=1&comment_parent=1
+[*] >> [405] /xmlrpc.php
+[*] Unhandled 405
+[*] >> [200] /wp-content/uploads/2020/05/2020-landscape-1.png
+[*] >> [301] /
+[*] >>> [Q] p=6
+[301] Redirection to: http://rpi.bot/the-new-umoma-opens-its-doors-2/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fthe-new-umoma-opens-its-doors-2%2F
+[*] >> [200] /wp-content/uploads/2020/05/espresso.jpg
+[*] >> [301] /
+[*] >>> [Q] p=15
+[301] Redirection to: http://rpi.bot/a-homepage-section/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fa-homepage-section%2F
+[*] >> [200] /sample-page/feed/
+[*] >> [301] /
+[*] >>> [Q] p=2
+[301] Redirection to: http://rpi.bot/sample-page/
+[*] >> [200] /wp-json/oembed/1.0/embed
+[*] >>> [Q] url=http%3A%2F%2Frpi.bot%2Fsample-page%2F
+```
+</details>
 
 ## Przegląd manualny
 
@@ -380,5 +483,16 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 **Koncepcja:** Strona `/readme.html` jest pozostałością po procesie instalacji i zawiera potencjalnie podatne informacje oraz wiele z linków, które są rozpoznawane przez automatyczne skanery.
 
 **Zalecenia:** Jako pozostałość po procesie instalacji, omawiana strona powinna zostać usunięta.
+
+## Ujawnienie plików PHP
+**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+
+**Położenie:** `rpi.bot/wp-includes/`
+
+**Opis:** Dostępny jest katalog z indeksem plików wykonawczych serwera.
+
+**Koncepcja:** Strona wyświetla listę plików, które wykonują różne funkcje serwera "od zaplecza". Kod tych plików nie jest możliwy do zobaczenia z przeglądarki, ponieważ zwracane są puste pliki.
+
+**Zalecenia:**
 
 
