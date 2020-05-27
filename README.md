@@ -144,7 +144,70 @@ PORT      STATE         SERVICE         VERSION
 ```
 </details>
 
+### Nikto
 
-## Testowanie aplikacji internetowej
+Dokonano skanu strony internetowej za pomocą narzędzia Nikto. 
 
-W testowaniu wstrzyknięć SQL przydatna będzie [wiedza o budowie baz danych wordpress](https://wp-staging.com/docs/the-wordpress-database-structure/).
+<details>
+<summary>[Rozwiń listę wyników]</summary>
+
+---------------------------------------------------------------------------
++ Target IP:          192.168.56.133
++ Target Hostname:    rpi.bot
++ Target Port:        80
++ Start Time:         2020-05-27 09:52:39 (GMT-4)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.38 (Debian)
++ The anti-clickjacking X-Frame-Options header is not present.
++ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
++ Uncommon header 'link' found, with multiple values: (<http://rpi.bot/wp-json/>; rel="https://api.w.org/",<http://rpi.bot/>; rel=shortlink,)
++ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
++ Uncommon header 'x-redirect-by' found, with contents: WordPress
++ No CGI Directories found (use '-C all' to force check all possible dirs)
++ Entry '/wp-admin/' in robots.txt returned a non-forbidden or redirect HTTP code (302)
++ "robots.txt" contains 2 entries which should be manually viewed.
++ Web Server returns a valid response with junk HTTP methods, this may cause false positives.
++ OSVDB-3233: /icons/README: Apache default file found.
++ /wp-links-opml.php: This WordPress script reveals the installed version.
++ OSVDB-3092: /license.txt: License file found may identify site software.
++ /wp-app.log: Wordpress' wp-app.log may leak application/system details.
++ /wordpresswp-app.log: Wordpress' wp-app.log may leak application/system details.
++ /: A Wordpress installation was found.
++ /wordpress: A Wordpress installation was found.
++ Cookie wordpress_test_cookie created without the httponly flag
++ OSVDB-3268: /wp-content/uploads/: Directory indexing found.
++ /wp-content/uploads/: Wordpress uploads directory is browsable. This may reveal sensitive information
++ /wp-login.php: Wordpress login found
++ 7790 requests: 0 error(s) and 19 item(s) reported on remote host
++ End Time:           2020-05-27 09:56:15 (GMT-4) (216 seconds)
+---------------------------------------------------------------------------
+</details>
+
+W skan sugeruje warte przetestowania adresy oraz podatności. W szczególności znaleziono potencjalne podatności: XSS, enumaracja użytkowników, ujawnienie danych o serwerze (w tym również plik robots.txt), ciasteczka bez http-only (pozwala na kradzież ciasteczek z użyciem skryptów). 
+
+### WPScan
+
+Przeprowadzono skany silnika Wordpress za pomocą narzędzia WPScan.
+
+<details>
+<summary>[Rozwiń listę wyników]</summary>
+TBA
+</details>
+
+## Znalezione false positives
+- Katalog `/wp-content/uploads/` został sprawdzony pod kątem directory traversal. Strona reaguje poprawnie, tzn. czyści zapytanie z elementów `../` oraz przekierowuje najdalej do strony głównej. Zawiera on dane wysłane przez administratorów, tj. obrazki załączane do bloga.
+- Plik `/wp-app.log` nie jest dostępny
+- Skrypt `/wp-links-opml.php` zdaje się nie ujawniać danych wrażliwych 
+
+## Podatności
+
+### Jawna transmisja danych
+Ocena zagrożenia: 
+Położenie: `/wp-login.php`
+Opis: Strona nie jest szyfrowana. Dane logowania są transmitowane tekstem jawnym.
+Koncepcja: Przeglądarka zwraca uwagę na niezabezpieczoną komunikację. Za pomocą programu Wireshark przechwycono próbę logowania: 
+
+![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/encr.PNG)
+
+Jak widać, dane logowania nie są zabezpieczone.
+Zalecenia: Implementacja HTTPS, pozyskanie certyfikatu strony
