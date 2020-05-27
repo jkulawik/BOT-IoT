@@ -57,12 +57,21 @@ Maszynie nadano 1GB RAM (zgodnie z jednym z tańszych modeli RPi).
 Za pomocą generatora liczb losowych na hasło użytkownika wybrano nr. 20 (tj. "welcome") z [listy dwudziestu pięciu najpopularniejszych haseł roku 2019 wg. firmy Splashdata.](https://www.prweb.com/releases/what_do_password_and_president_trump_have_in_common_both_lost_ranking_on_splashdatas_annual_worst_passwords_list/prweb16794349.htm)
 
 Logowanie do bazy danych wykonywane jest za pomocą polecenia ```mysql -uroot -p```.
-Konto administratora Wordpress utworzono pod nazwą 'admin' oraz wg. wskazówek ustawiono "wystarczająco silne" hasło: 'Reks\o1997'
+Konto administratora Wordpress utworzono pod nazwą `admin` oraz wg. wskazówek ustawiono "wystarczająco silne" hasło: `Reks\o1997`
 W rejestracji wybrano email jednego z członków grupy. Zgodnie z założeniem, dane te nie zostaną wykorzystane w penteście o ile nie zostaną podczas niego znalezione zdalnie.
 
 Dla ułatwienia testowania, w ustawieniach strony Wordpress (Settings/General) zmieniono adres URL na `http://rpi.bot`.
 Domyślne ustawienie `http://localhost` sprawiało bowiem problem z testowaniem na innych maszynach.
 Następnie w pliku `/etc/hosts/` (zarówno na maszynie do testowania jak i maszynie testowanej) dodano linijkę, która rozwiązuje adres IP testowanego systemu na nazwę `rpi.bot` (a raczej vice-versa).
+
+## Dodawanie użytkowników
+
+W trakcie testów dodano również użytkownika testowego Wordpress o nazwie `NeilBarney`. Wordpress oferuje dobry podział przywilejów w opcjach konta, nowe konto jest jednak zakładane jako symulacja nieodpowiedzialnego sub-administratora w celu poszerzenia zakresu testu.
+Użytkownikowi nadano e-mail ze strony GuerillaMail. Strona nie miała z tym problemu, co nie jest dobre - GuerillaMail to serwis tymczasowych kont e-mail, który jest używany do tworzenia alternatywnych tożsamości oraz innych kont złośliwych. Ponieważ jednak dodawanie użytkowników jest na badanej stronie manualne, można na to przymknąć oko. 
+
+Użytkownikowi nadano hasło `qwerty123` (wybrane z tej samej listy co wcześniej, tym razem przez rzut czterema kośćmi z wynikiem 12). Strona ta ma dobry system oceniania haseł, który sprawdza entropię wpisywanego hasła oraz wymaga potwierdzenia nadania hasła słabego. Jest to dobra praktyka, którą celowo ominięto na korzyść testu - można jednak podejrzewać, że użytkownik dla wygody mógłby zrobić podobnie.
+
+Konto to zostało dodane podczas testu, więc nie jest ono wylistowane w niektórych skanach.
 
 # Skanowanie
 
@@ -265,13 +274,13 @@ Interesting Finding(s):
 ```
 </details>
 
-(analiza wyników skanu)
+Skan dostarczył przede wszystkim kilku nowych stron wartych przetestowania. Szczególnie interesująca może być strona XML-RPC (remote procedure call). Już sama nazwa technologii wskazuje na potencjalną obecność podatności. Istotnym elementem jest również strona `readme.html` - więcej w podatności
 
 Sprawdzono również metody enumeracji oferowane przez narzędzie. Powiodła się jedynie enumeracja użytkowników (wyniki w podatnościach).
 
 ## Pełzacz internetowy
 
-TBA
+TBA 
 
 ## Przegląd manualny
 
@@ -296,10 +305,10 @@ Na chwilę obecną informacje te zdają się nie być wrażliwe.
 Inne testy podatności:
 (...)
 
-# Podatności
+# Zagrożenia
 
-## Wzór opisu podatności (nazwa tutaj)
-**Ocena zagrożenia:**
+## Wzór opisu zagrożenia (nazwa tutaj)
+**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
 
 **Położenie:**
 
@@ -310,7 +319,7 @@ Inne testy podatności:
 **Zalecenia:**
 
 ## Jawna transmisja danych
-**Ocena zagrożenia:**
+**Stopień zagrożenia:** Średni - CVSS 5.9 (Wektor: `CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:L/A:N`)
 
 **Położenie:** `/wp-login.php`
 
@@ -325,7 +334,7 @@ Jak widać, dane logowania nie są zabezpieczone.
 **Zalecenia:** Implementacja HTTPS, pozyskanie certyfikatu strony
 
 ## Enumeracja użytkowników
-**Ocena zagrożenia:**
+**Stopień zagrożenia:** Średni - CVSS 5.3 (Wektor: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N`)
 
 **Położenie:** `/wp-login.php`
 
@@ -353,3 +362,17 @@ Podatność ta może być wykorzystana automatycznie za pomocą narzędzia WPSca
 Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być różne i wymagać oddzielnych napraw.
 
 **Zalecenia:** Ograniczenie nieudanych liczb logowania. Przykładowo: tymczasowa blokada prób logowania dla jednego adresu IP wypadku przekroczenia dozwolonej liczby nieudanych prób logowania na nieistniejące konto.
+
+
+## Ujawnienie wrażliwych interfejsów
+**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+
+**Położenie:** Strona `/readme.html`
+
+**Opis:** Strona zdradza wrażliwe elementy serwisu.
+
+**Koncepcja:** Strona `/readme.html` jest pozostałością po procesie instalacji i zawiera potencjalnie podatne informacje oraz wiele z linków, które są rozpoznawane przez automatyczne skanery.
+
+**Zalecenia:** Jako pozostałość po procesie instalacji, omawiana strona powinna zostać usunięta.
+
+
