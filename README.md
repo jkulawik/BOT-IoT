@@ -151,6 +151,7 @@ Dokonano skanu strony internetowej za pomocą narzędzia Nikto.
 <details>
 <summary>[Rozwiń listę wyników]</summary>
 
+```
 ---------------------------------------------------------------------------
 + Target IP:          192.168.56.133
 + Target Hostname:    rpi.bot
@@ -181,6 +182,7 @@ Dokonano skanu strony internetowej za pomocą narzędzia Nikto.
 + 7790 requests: 0 error(s) and 19 item(s) reported on remote host
 + End Time:           2020-05-27 09:56:15 (GMT-4) (216 seconds)
 ---------------------------------------------------------------------------
+```
 </details>
 
 W skan sugeruje warte przetestowania adresy oraz podatności. W szczególności znaleziono potencjalne podatności: XSS, enumaracja użytkowników, ujawnienie danych o serwerze (w tym również plik robots.txt), ciasteczka bez http-only (pozwala na kradzież ciasteczek z użyciem skryptów). 
@@ -191,23 +193,163 @@ Przeprowadzono skany silnika Wordpress za pomocą narzędzia WPScan.
 
 <details>
 <summary>[Rozwiń listę wyników]</summary>
-TBA
+   
+```
+_______________________________________________________________
+
+[+] URL: http://rpi.bot/
+[+] Started: Wed May 27 09:43:57 2020
+
+Interesting Finding(s):
+
+[+] http://rpi.bot/
+ | Interesting Entry: Server: Apache/2.4.38 (Debian)
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] http://rpi.bot/robots.txt
+ | Interesting Entries:
+ |  - /wp-admin/
+ |  - /wp-admin/admin-ajax.php
+ | Found By: Robots Txt (Aggressive Detection)
+ | Confidence: 100%
+
+[+] http://rpi.bot/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access
+
+[+] http://rpi.bot/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] Upload directory has listing enabled: http://rpi.bot/wp-content/uploads/
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] http://rpi.bot/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 5.4.1 identified (Latest, released on 2020-04-29).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://rpi.bot/feed/, <generator>https://wordpress.org/?v=5.4.1</generator>
+ |  - http://rpi.bot/comments/feed/, <generator>https://wordpress.org/?v=5.4.1</generator>
+
+[+] WordPress theme in use: twentyseventeen
+ | Location: http://rpi.bot/wp-content/themes/twentyseventeen/
+ | Latest Version: 2.3 (up to date)
+ | Last Updated: 2020-03-31T00:00:00.000Z
+ | Readme: http://rpi.bot/wp-content/themes/twentyseventeen/readme.txt
+ | Style URL: http://rpi.bot/wp-content/themes/twentyseventeen/style.css?ver=20190507
+ | Style Name: Twenty Seventeen
+ | Style URI: https://wordpress.org/themes/twentyseventeen/
+ | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ | Confirmed By: Css Style In 404 Page (Passive Detection)
+ |
+ | Version: 2.3 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://rpi.bot/wp-content/themes/twentyseventeen/style.css?ver=20190507, Match: 'Version: 2.3'
+```
 </details>
+
+(analiza wyników skanu)
+
+Sprawdzono również metody enumeracji oferowane przez narzędzie. Powiodła się jedynie enumeracja użytkowników (wyniki w podatnościach).
+
+### Pełzacz internetowy
+
+TBA
+
+### Przegląd manualny
+
+Inne strony warte sprawdzenia:
+
+- Strona wyszukiwania - `http://rpi.bot/?s=search-term` - 
+- Sekcja komentarzy pod blogiem, np. `http://rpi.bot/hello-world/`
 
 ## Znalezione false positives
 - Katalog `/wp-content/uploads/` został sprawdzony pod kątem directory traversal. Strona reaguje poprawnie, tzn. czyści zapytanie z elementów `../` oraz przekierowuje najdalej do strony głównej. Zawiera on dane wysłane przez administratorów, tj. obrazki załączane do bloga.
-- Plik `/wp-app.log` nie jest dostępny
-- Skrypt `/wp-links-opml.php` zdaje się nie ujawniać danych wrażliwych 
+- Pliki `/wp-app.log`, `/wordpresswp-app.log`,  nie są dostępne
+- Katalogi `/icons` oraz `/wordpress` nie są dostępne
+- Skrypt `/wp-links-opml.php` oraz plik  `license.txt` zdają się nie ujawniać danych wrażliwych 
+- Zawartość pliku `robots.txt`: 
+```
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+```
+Na chwilę obecną informacje te zdają się nie być wrażliwe.
+
+Inne testy podatności:
+(...)
 
 ## Podatności
 
+### Wzór opisu podatności (nazwa tutaj)
+Ocena zagrożenia:
+
+Położenie:
+
+Opis:
+
+Koncepcja:
+
+Zalecenia:
+
 ### Jawna transmisja danych
 Ocena zagrożenia: 
+
 Położenie: `/wp-login.php`
+
 Opis: Strona nie jest szyfrowana. Dane logowania są transmitowane tekstem jawnym.
+
 Koncepcja: Przeglądarka zwraca uwagę na niezabezpieczoną komunikację. Za pomocą programu Wireshark przechwycono próbę logowania: 
 
 ![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/encr.PNG)
 
 Jak widać, dane logowania nie są zabezpieczone.
+
 Zalecenia: Implementacja HTTPS, pozyskanie certyfikatu strony
+
+### Enumeracja użytkowników
+Ocena zagrożenia:
+
+Położenie: `/wp-login.php`
+
+Opis: Interfejs logowania pozwala na obecność użytkowników w systemie.
+
+Koncepcja: Testowano LDAP injection. Sprawdzono nazwę użytkownika `admin)(&)` z losowym hasłem. Zwróciła ona błąd `Unknown username. Check again or try your email address.`, który różni się od błędu który wyświetla się w przypadku niepoprawnego hasła oraz poprawnego loginu, np. "admin": `Error: The password you entered for the username admin is incorrect`. Następnie sprawdzono dwadzieścia parę niepoprawnych nazw kont - zwracały ten sam błąd co wspomniany na początku.
+
+Podatność ta może być wykorzystana automatycznie za pomocą narzędzia WPScan. Polecenie `wpscan --url rpi.bot --enumerate u` zwraca następujące wyniki:
+
+```
+[i] User(s) Identified:
+
+[+] admin
+ | Found By: Author Posts - Author Pattern (Passive Detection)
+ | Confirmed By:
+ |  Rss Generator (Passive Detection)
+ |  Wp Json Api (Aggressive Detection)
+ |   - http://rpi.bot/wp-json/wp/v2/users/?per_page=100&page=1
+ |  Oembed API - Author URL (Aggressive Detection)
+ |   - http://rpi.bot/wp-json/oembed/1.0/embed?url=http://rpi.bot/&format=json
+ |  Rss Generator (Aggressive Detection)
+ |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ |  Login Error Messages (Aggressive Detection)
+```
+Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być różne i wymagać oddzielnych napraw.
+
+Zalecenia: Ograniczenie nieudanych liczb logowania. Przykładowo: tymczasowa blokada prób logowania dla jednego adresu IP wypadku przekroczenia dozwolonej liczby nieudanych prób logowania na nieistniejące konto.
