@@ -5,13 +5,13 @@ Temat: bezpieczeństwo IoT.
 
 Grupa: J. Kulawik, W. Szałyga
 
-## Cele projektu:
+# Cele projektu:
 - Zapoznanie się z dostępnymi gotowymi rozwiązaniami usług sieciowych w IoT
 - Zapoznanie się ze specyfiką bezpieczeństwa w takich usługach
 - Zaznajomienie się z rozwiązaniami wirtualizacji IoT lub instalacją oprogramowania na hardwarze
 - Trening audytu środowiska bez celowo wystawionych podatności
 
-## Zakres projektu
+# Zakres projektu
 - Przegląd oraz wybór oprogramowania do przetestowania z zakresu IoT 
 
    Przykładowo, może być to:
@@ -26,7 +26,7 @@ Zakres rozszerzony zrealizowany podczas realizacji celów:
 - Tworzenie maszyny wirtualnej
 - Zaznajomienie z podstawami konfiguracji sieciowej serwera Apache oraz systemu Linux
 
-## Propozycja środowiska testowego
+# Propozycja środowiska testowego
 
 Dokonano przeglądu technologii wirtualizacyjnych IoT. Ze względu na małą dostępność maszyn  wirtualnych IoT, zdecydowano się na stworzenie własnej za pomocą obrazu systemu operacyjnego.
 
@@ -39,7 +39,7 @@ Test będzie przeprowadzony w stylu greybox - siłą rzeczy znane są pewne szce
 Nie będzie wykorzystywana wiedza na temat haseł oraz loginów - żeby je wykorzystać, muszą zostać wydobyte w trakcie testu.
 Ze względu na infrastrukturę sieciową maszyn wirtualnych, test ten odpowiada połączeniu się do sieci np. Wi-fi organizacji/właściciela oraz testowaniu znajdującego się w niej serwera.
 
-## Scenariusz 
+# Scenariusz 
 
 Niedoświadczony w zarządzaniu użytkownik stawia prosty serwer na płytce Raspberry Pi.
 Pozostawione są domyślne opcje sugerowane przez popularny poradnik ze strony RPi:
@@ -47,7 +47,7 @@ https://projects.raspberrypi.org/en/projects/lamp-web-server-with-wordpress
 
 Sprawdzone zostanie bezpieczeństwo takiego rozwiązania, w tym instalowanej strony Wordpress.
 
-## Przygotowania maszyny wirtualnej
+# Przygotowania maszyny wirtualnej
 
 Pierwszym krokiem jest stworzenie maszyny wirtualnej zgodnie z z poniższym artykułem:
 https://raspberrytips.com/run-raspberry-in-virtual-machine/
@@ -64,7 +64,7 @@ Dla ułatwienia testowania, w ustawieniach strony Wordpress (Settings/General) z
 Domyślne ustawienie `http://localhost` sprawiało bowiem problem z testowaniem na innych maszynach.
 Następnie w pliku `/etc/hosts/` (zarówno na maszynie do testowania jak i maszynie testowanej) dodano linijkę, która rozwiązuje adres IP testowanego systemu na nazwę `rpi.bot` (a raczej vice-versa).
 
-## Skanowanie
+# Skanowanie
 
 Przeprowadzono skany TCP oraz UDP całej sieci. Jak można się było spodziewać, znaleziono jedynie usługę HTTP na porcie 80:
 
@@ -144,7 +144,7 @@ PORT      STATE         SERVICE         VERSION
 ```
 </details>
 
-### Nikto
+## Nikto
 
 Dokonano skanu strony internetowej za pomocą narzędzia Nikto. 
 
@@ -187,7 +187,7 @@ Dokonano skanu strony internetowej za pomocą narzędzia Nikto.
 
 W skan sugeruje warte przetestowania adresy oraz podatności. W szczególności znaleziono potencjalne podatności: XSS, enumaracja użytkowników, ujawnienie danych o serwerze (w tym również plik robots.txt), ciasteczka bez http-only (pozwala na kradzież ciasteczek z użyciem skryptów). 
 
-### WPScan
+## WPScan
 
 Przeprowadzono skany silnika Wordpress za pomocą narzędzia WPScan.
 
@@ -269,18 +269,18 @@ Interesting Finding(s):
 
 Sprawdzono również metody enumeracji oferowane przez narzędzie. Powiodła się jedynie enumeracja użytkowników (wyniki w podatnościach).
 
-### Pełzacz internetowy
+## Pełzacz internetowy
 
 TBA
 
-### Przegląd manualny
+## Przegląd manualny
 
 Inne strony warte sprawdzenia:
 
 - Strona wyszukiwania - `http://rpi.bot/?s=search-term` - 
 - Sekcja komentarzy pod blogiem, np. `http://rpi.bot/hello-world/`
 
-## Znalezione false positives
+# Znalezione false positives
 - Katalog `/wp-content/uploads/` został sprawdzony pod kątem directory traversal. Strona reaguje poprawnie, tzn. czyści zapytanie z elementów `../` oraz przekierowuje najdalej do strony głównej. Zawiera on dane wysłane przez administratorów, tj. obrazki załączane do bloga.
 - Pliki `/wp-app.log`, `/wordpresswp-app.log`,  nie są dostępne
 - Katalogi `/icons` oraz `/wordpress` nie są dostępne
@@ -296,9 +296,9 @@ Na chwilę obecną informacje te zdają się nie być wrażliwe.
 Inne testy podatności:
 (...)
 
-## Podatności
+# Podatności
 
-### Wzór opisu podatności (nazwa tutaj)
+## Wzór opisu podatności (nazwa tutaj)
 **Ocena zagrożenia:**
 
 **Położenie:**
@@ -309,7 +309,7 @@ Inne testy podatności:
 
 **Zalecenia:**
 
-### Jawna transmisja danych
+## Jawna transmisja danych
 **Ocena zagrożenia:**
 
 **Położenie:** `/wp-login.php`
@@ -324,7 +324,7 @@ Jak widać, dane logowania nie są zabezpieczone.
 
 **Zalecenia:** Implementacja HTTPS, pozyskanie certyfikatu strony
 
-### Enumeracja użytkowników
+## Enumeracja użytkowników
 **Ocena zagrożenia:**
 
 **Położenie:** `/wp-login.php`
