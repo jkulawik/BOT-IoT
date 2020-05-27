@@ -292,6 +292,7 @@ Inne strony warte sprawdzenia:
 # Znalezione false positives
 - Katalog `/wp-content/uploads/` został sprawdzony pod kątem directory traversal. Strona reaguje poprawnie, tzn. czyści zapytanie z elementów `../` oraz przekierowuje najdalej do strony głównej. Zawiera on dane wysłane przez administratorów, tj. obrazki załączane do bloga.
 - Pliki `/wp-app.log`, `/wordpresswp-app.log`,  nie są dostępne
+- Plik `/wp-cron.php` jest pusty. Jest to skrypt, który odpowiada za planowanie zadań. Aktualnie nie są znane żadne związane z nim podatności, jednak [jego domyślna konfiguracja może być wykorzystana do ataku DDoS](https://medium.com/@thecpanelguy/the-nightmare-that-is-wpcron-php-ae31c1d3ae30).
 - Katalogi `/icons` oraz `/wordpress` nie są dostępne
 - Skrypt `/wp-links-opml.php` oraz plik  `license.txt` zdają się nie ujawniać danych wrażliwych 
 - Zawartość pliku `robots.txt`: 
@@ -301,6 +302,7 @@ Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 ```
 Na chwilę obecną informacje te zdają się nie być wrażliwe.
+- Interfejs `/xmlrpc.php` ma liczne znane podatności, jednak zdaje się być wyłączony.
 
 Inne testy podatności:
 (...)
@@ -358,6 +360,10 @@ Podatność ta może być wykorzystana automatycznie za pomocą narzędzia WPSca
  |  Rss Generator (Aggressive Detection)
  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
  |  Login Error Messages (Aggressive Detection)
+ 
+ [+] neilbarney
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
 ```
 Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być różne i wymagać oddzielnych napraw.
 
@@ -365,7 +371,7 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 
 
 ## Ujawnienie wrażliwych interfejsów
-**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+**Stopień zagrożenia:** Brak - CVSS 0.0
 
 **Położenie:** Strona `/readme.html`
 
