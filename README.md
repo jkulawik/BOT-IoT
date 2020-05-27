@@ -299,39 +299,39 @@ Inne testy podatności:
 ## Podatności
 
 ### Wzór opisu podatności (nazwa tutaj)
-Ocena zagrożenia:
+**Ocena zagrożenia:**
 
-Położenie:
+**Położenie:**
 
-Opis:
+**Opis:**
 
-Koncepcja:
+**Koncepcja:**
 
-Zalecenia:
+**Zalecenia:**
 
 ### Jawna transmisja danych
-Ocena zagrożenia: 
+**Ocena zagrożenia:**
 
-Położenie: `/wp-login.php`
+**Położenie:** `/wp-login.php`
 
-Opis: Strona nie jest szyfrowana. Dane logowania są transmitowane tekstem jawnym.
+**Opis:** Strona nie jest szyfrowana. Dane logowania są transmitowane tekstem jawnym.
 
-Koncepcja: Przeglądarka zwraca uwagę na niezabezpieczoną komunikację. Za pomocą programu Wireshark przechwycono próbę logowania: 
+**Koncepcja:** Przeglądarka zwraca uwagę na niezabezpieczoną komunikację. Za pomocą programu Wireshark przechwycono próbę logowania: 
 
 ![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/encr.PNG)
 
 Jak widać, dane logowania nie są zabezpieczone.
 
-Zalecenia: Implementacja HTTPS, pozyskanie certyfikatu strony
+**Zalecenia:** Implementacja HTTPS, pozyskanie certyfikatu strony
 
 ### Enumeracja użytkowników
-Ocena zagrożenia:
+**Ocena zagrożenia:**
 
-Położenie: `/wp-login.php`
+**Położenie:** `/wp-login.php`
 
-Opis: Interfejs logowania pozwala na obecność użytkowników w systemie.
+**Opis:** Interfejs logowania pozwala na obecność użytkowników w systemie.
 
-Koncepcja: Testowano LDAP injection. Sprawdzono nazwę użytkownika `admin)(&)` z losowym hasłem. Zwróciła ona błąd `Unknown username. Check again or try your email address.`, który różni się od błędu który wyświetla się w przypadku niepoprawnego hasła oraz poprawnego loginu, np. "admin": `Error: The password you entered for the username admin is incorrect`. Następnie sprawdzono dwadzieścia parę niepoprawnych nazw kont - zwracały ten sam błąd co wspomniany na początku.
+**Koncepcja:** Testowano LDAP injection. Sprawdzono nazwę użytkownika `admin)(&)` z losowym hasłem. Zwróciła ona błąd `Unknown username. Check again or try your email address.`, który różni się od błędu który wyświetla się w przypadku niepoprawnego hasła oraz poprawnego loginu, np. "admin": `Error: The password you entered for the username admin is incorrect`. Następnie sprawdzono dwadzieścia parę niepoprawnych nazw kont - zwracały ten sam błąd co wspomniany na początku.
 
 Podatność ta może być wykorzystana automatycznie za pomocą narzędzia WPScan. Polecenie `wpscan --url rpi.bot --enumerate u` zwraca następujące wyniki:
 
@@ -352,4 +352,4 @@ Podatność ta może być wykorzystana automatycznie za pomocą narzędzia WPSca
 ```
 Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być różne i wymagać oddzielnych napraw.
 
-Zalecenia: Ograniczenie nieudanych liczb logowania. Przykładowo: tymczasowa blokada prób logowania dla jednego adresu IP wypadku przekroczenia dozwolonej liczby nieudanych prób logowania na nieistniejące konto.
+**Zalecenia:** Ograniczenie nieudanych liczb logowania. Przykładowo: tymczasowa blokada prób logowania dla jednego adresu IP wypadku przekroczenia dozwolonej liczby nieudanych prób logowania na nieistniejące konto.
