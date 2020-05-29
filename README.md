@@ -500,7 +500,7 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 
 
 ## Brute force logowania
-**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+**Stopień zagrożenia:** Wysoki - CVSS 8.6  (Wektor: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:L`)
 
 **Położenie:** 
 
@@ -548,4 +548,6 @@ Atak powiódł się - moduł zwrócił znalezione hasło:
 
 `[+] / - WordPress Brute Force - SUCCESSFUL login for 'NeilBarney' : 'qwerty123'`
 
-**Zalecenia:**
+Strona Site Health nie zwróciła żadnych ostrzeżeń na temat ataku lub podatności.
+
+**Zalecenia:** [Dokumentacja Wordpress](https://wordpress.org/support/article/brute-force-attacks/) zaleca wykorzystanie wtyczki lub manualną zmianę konfguracji.
