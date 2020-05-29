@@ -502,7 +502,7 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 ## Brute force logowania
 **Stopień zagrożenia:** Wysoki - CVSS 8.6  (Wektor: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:L`)
 
-**Położenie:** 
+**Położenie:** `/wp-login.php`
 
 **Opis:** Liczba nieudanych prób logowania nie jest ograniczana, co pozwala na zgadywanie haseł.
 
@@ -542,7 +542,7 @@ Module options (auxiliary/scanner/http/wordpress_login_enum):
    VERBOSE              true                    yes       Whether to print output for all attempts
    VHOST                rpi.bot                 no        HTTP server virtual host
 ```
-<details>
+</details>
 
 Atak powiódł się - moduł zwrócił znalezione hasło: 
 
