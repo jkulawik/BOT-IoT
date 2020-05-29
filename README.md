@@ -405,7 +405,9 @@ Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
 ```
 Na chwilę obecną informacje te zdają się nie być wrażliwe.
-- Interfejs `/xmlrpc.php` ma liczne znane podatności, jednak zdaje się być wyłączony.
+- Interfejs `/xmlrpc.php` ma liczne znane podatności, jednak zdaje się być wyłączony bądź skonfigurowany w sposób bezpieczny.
+
+- Plik `/wp-config.php` zwraca pustą zawartość.
 
 Inne testy podatności:
 (...)
@@ -472,6 +474,7 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 
 **Zalecenia:** Ograniczenie nieudanych liczb logowania. Przykładowo: tymczasowa blokada prób logowania dla jednego adresu IP wypadku przekroczenia dozwolonej liczby nieudanych prób logowania na nieistniejące konto.
 
+[Poradniki zabezpieczania blogów Wordpress](https://www.getastra.com/blog/cms/wordpress-security/stop-user-enumeration/) sugerują zmianę pewnych adresów URL, ręcznie bądź z pomocą wtyczki. 
 
 ## Ujawnienie wrażliwych interfejsów
 **Stopień zagrożenia:** Brak - CVSS 0.0
@@ -485,7 +488,7 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 **Zalecenia:** Jako pozostałość po procesie instalacji, omawiana strona powinna zostać usunięta.
 
 ## Ujawnienie plików PHP
-**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+**Stopień zagrożenia:** Średni - CVSS 5.3 (Wektor: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N`)
 
 **Położenie:** `rpi.bot/wp-includes/`
 
@@ -493,6 +496,6 @@ Należy zwrócić uwagę, że źródła tych dwóch metod enumaracji mogą być 
 
 **Koncepcja:** Strona wyświetla listę plików, które wykonują różne funkcje serwera "od zaplecza". Kod tych plików nie jest możliwy do zobaczenia z przeglądarki, ponieważ zwracane są puste pliki.
 
-**Zalecenia:**
+**Zalecenia:** [Ukrycie wspomnianego folderu.](https://wordpress.org/support/article/hardening-wordpress/#securing-wp-includes)
 
 
