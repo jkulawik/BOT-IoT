@@ -462,6 +462,7 @@ Sprawdzono również inne strony. Nie znaleziono podatnych zapytań.
 
 W celu sprawdzenia występowania możliwości zagrożenia typu CSRF wykorzystane zostały dane konta administracyjnego. Stworzony został najbardziej podstawowy złośliwy plik, który na celu miał usunąć jedną ze stron. Następnie zasymulowana została sytuacja, w której użytkownik zalogowany na konto o uprawnieniach administratorskich otwiera złośliwy plik. 
 
+
 ```
 <!DOCTYPE html>
  <html>
@@ -471,6 +472,7 @@ W celu sprawdzenia występowania możliwości zagrożenia typu CSRF wykorzystane
         </body>
  </html>
 ```
+
 
 Atak nie powodzi się ponieważ WordPress wykorzystuję „number used onece” inaczej „nonce”, który jest generowany w przypadku WordPress’a co jakiś czas a tworzony jest na bazie wartości sesji użytkownika. Przy wykonywaniu poleceń usuwania obowiązkowym jest posiadanie określonej wartości noncesu, ponieważ jego wartość jest porównywana z prawdziwą przez serwer a później wykonywana.
 
