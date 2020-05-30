@@ -392,6 +392,54 @@ Inne strony warte sprawdzenia:
 - Strona wyszukiwania - `http://rpi.bot/?s=search-term` - 
 - Sekcja komentarzy pod blogiem, np. `http://rpi.bot/hello-world/`
 
+## Sqlmap
+
+Strona została zweryfikowana pod względem możliwości ataku przy użyciu SQL Injection. W tym celu wykorzystany został sqlmap. Strony, które podlegały sprawdzeniu: 
+
+- `http://rpi.bot/?s=search-term`  
+
+Przy użyciu Burp Suite wychwycone zostało dokładne polecenie wysyłane do serwera. Polecenie to następnie zostało przeanalizowane przez sqlmap.
+
+<details>
+<summary>Wynik polecenia</summary>
+
+[16:17:09] [INFO] parsing HTTP request from '/home/kali/Desktop/sqlmap'
+[16:17:09] [INFO] loading tamper module 'modsecurityzeroversioned'
+[16:17:09] [WARNING] tamper script 'modsecurityzeroversioned' is only meant to be run against MySQL
+[16:17:09] [INFO] testing connection to the target URL
+[16:17:09] [INFO] testing if the target URL content is stable
+[16:17:10] [INFO] target URL content is stable
+[16:17:10] [INFO] testing if GET parameter 's' is dynamic
+[16:17:10] [WARNING] GET parameter 's' does not appear to be dynamic
+[16:17:10] [WARNING] heuristic (basic) test shows that GET parameter 's' might not be injectable
+[16:17:11] [INFO] testing for SQL injection on GET parameter 's'
+[16:17:11] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[16:17:11] [WARNING] reflective value(s) found and filtering out
+[16:17:13] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[16:17:13] [INFO] testing 'MySQL >= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)'
+[16:17:13] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[16:17:13] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'
+[16:17:14] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
+[16:17:14] [INFO] testing 'MySQL >= 5.0 error-based - Parameter replace (FLOOR)'
+[16:17:14] [INFO] testing 'MySQL inline queries'
+[16:17:14] [INFO] testing 'PostgreSQL inline queries'
+[16:17:14] [INFO] testing 'Microsoft SQL Server/Sybase inline queries'
+[16:17:14] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[16:17:15] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries (comment)'
+[16:17:15] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE - comment)'
+[16:17:15] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[16:17:15] [INFO] testing 'PostgreSQL > 8.1 AND time-based blind'
+[16:17:16] [INFO] testing 'Microsoft SQL Server/Sybase time-based blind (IF)'
+[16:17:16] [INFO] testing 'Oracle AND time-based blind'
+it is recommended to perform only basic UNION tests if there is not at least one other (potential) technique found. Do you want to reduce the number of requests? [Y/n] 
+[16:17:18] [INFO] testing 'Generic UNION query (NULL) - 1 to 10 columns'
+[16:17:19] [WARNING] GET parameter 's' does not seem to be injectable
+[16:17:19] [CRITICAL] all tested parameters do not appear to be injectable.
+
+</details>
+
+Walidacja formularza wydaje się być poprawna, ponieważ sqlmap nie wykazał, żadnych podatności.
+
 # Znalezione false positives
 - Katalog `/wp-content/uploads/` został sprawdzony pod kątem directory traversal. Strona reaguje poprawnie, tzn. czyści zapytanie z elementów `../` oraz przekierowuje najdalej do strony głównej. Zawiera on dane wysłane przez administratorów, tj. obrazki załączane do bloga.
 - Pliki `/wp-app.log`, `/wordpresswp-app.log`,  nie są dostępne
