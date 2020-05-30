@@ -458,6 +458,22 @@ Walidacja formularza wydaje się być poprawna, ponieważ sqlmap nie wykazał, �
 
 Sprawdzono również inne strony. Nie znaleziono podatnych zapytań.
 
+## CSRF 
+
+W celu sprawdzenia występowania możliwości zagrożenia typu CSRF wykorzystane zostały dane konta administracyjnego. Stworzony został najbardziej podstawowy złośliwy plik, który na celu miał usunąć jedną ze stron. Następnie zasymulowana została sytuacja, w której użytkownik zalogowany na konto o uprawnieniach administratorskich otwiera złośliwy plik. 
+
+```
+<!DOCTYPE html>
+ <html>
+        <body>
+									<! –– Losowo wpisany nonce ––>
+                <img src="http://rpi.bot/wp-admin/post.php?post=14&action=trash&_wpnonce=854fc3as2”>
+        </body>
+ </html>
+```
+
+Atak nie powodzi się ponieważ WordPress wykorzystuję „number used onece” inaczej „nonce”, który jest generowany w przypadku WordPress’a co jakiś czas a tworzony jest na bazie wartości sesji użytkownika. Przy wykonywaniu poleceń usuwania obowiązkowym jest posiadanie określonej wartości noncesu, ponieważ jego wartość jest porównywana z prawdziwą przez serwer a później wykonywana.
+
 # Zagrożenia
 
 ## Jawna transmisja danych
