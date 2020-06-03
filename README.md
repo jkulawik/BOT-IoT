@@ -33,7 +33,9 @@ Dokonano przeglądu technologii wirtualizacyjnych IoT. Ze względu na małą dos
 Proponowanym środowiskiem testowym jest wirtualny system Debian używany na płytkach Raspberry Pi - tzw. Raspbian.
 Zgodnie ze wspomnianym poniżej poradnikiem zostanie na nim zainstalowany serwer HTTP typu LAMP.
 
-> *P.S. Podczas dalszych badań odkryto technologię Docker oraz oparty na niej, dedykowany dla IoT system balenaOS. Mechanizmy wykorzystywane przez Dockera zdają się być rozwiązaniem bardzo bezpiecznym, dlatego testy aplikacji zbudowanej w kontenerze baleny mogą być ciekawym tematem na przyszłe projekty.*
+Można zadać sobie pytanie, dlaczego Linux, skoro mowa jest o IoT? Odpowiedź jest prosta - jest to system często używany w IoT, który jest w tej dziedzinie jednym z głównych problemów z bezpieczeństwem. Malware i botnety przez niego tworzone, takie jak [Mirai](https://en.wikipedia.org/wiki/Mirai_(malware)), [Remaiten](https://en.wikipedia.org/wiki/Remaiten), [BASHLITE](https://en.wikipedia.org/wiki/BASHLITE) czy [Linux.Darlloz](https://en.wikipedia.org/wiki/Linux.Darlloz) rozprzestrzeniały się po sieciach systemów wbudowanych. Wiele z nich wykorzystało niedbałość przy konfiguracji urządzeń, a w szczególności hasła domyślne i brak zabezpieczeń przeciw brute-force.
+
+> *Uwaga: Podczas trwania projektu odkryto technologię Docker oraz oparty na niej dedykowany dla IoT system balenaOS. Mechanizmy wykorzystywane przez Dockera zdają się być rozwiązaniem bardzo bezpiecznym, dlatego testy aplikacji instalowanych w kontenerze mogą być ciekawym tematem na przyszłe projekty.*
 
 Test będzie przeprowadzony w stylu greybox - siłą rzeczy znane są pewne szcegóły środowiska (w szcególności elementy konfiguracji sieciowej).
 Nie będzie wykorzystywana wiedza na temat haseł oraz loginów - żeby je wykorzystać, muszą zostać wydobyte w trakcie testu.
@@ -397,7 +399,7 @@ Inne strony warte sprawdzenia:
 - Pliki `/wp-app.log`, `/wordpresswp-app.log`,  nie są dostępne
 - Plik `/wp-cron.php` jest pusty. Jest to skrypt, który odpowiada za planowanie zadań. Aktualnie nie są znane żadne związane z nim podatności, jednak [jego domyślna konfiguracja może być wykorzystana do ataku DDoS](https://medium.com/@thecpanelguy/the-nightmare-that-is-wpcron-php-ae31c1d3ae30).
 - Katalogi `/icons` oraz `/wordpress` nie są dostępne
-- Skrypt `/wp-links-opml.php` oraz plik  `license.txt` zdają się nie ujawniać danych wrażliwych 
+- Skrypt `/wp-links-opml.php` oraz plik  `license.txt` zdają się nie ujawniać żadnych danych wrażliwych 
 - Zawartość pliku `robots.txt`: 
 ```
 User-agent: *
@@ -407,16 +409,18 @@ Allow: /wp-admin/admin-ajax.php
 Na chwilę obecną informacje te zdają się nie być wrażliwe.
 - Interfejs `/xmlrpc.php` ma liczne znane podatności, jednak zdaje się być wyłączony bądź skonfigurowany w sposób bezpieczny.
 
-- Plik `/wp-config.php` zwraca pustą zawartość.
+- Plik `/wp-config.php` nieautoryzowanemu użytkownikowi zwraca pustą zawartość.
 
 ## Wstrzyknięcia SQL
  
-Strona została sprawdzona pod względem możliwości ataku przy użyciu SQL Injection. W tym celu wykorzystany został sqlmap. Strona, która podlegała sprawdzeniu: `http://rpi.bot/?s=search-term`  
+Strona została sprawdzona pod względem możliwości ataku przy użyciu SQL Injection. W tym celu wykorzystany został sqlmap. Strona, która podlegała sprawdzeniu: `http://rpi.bot/?s=search-term`
+
+Testowanie manualne (dodawanie do zapytań znaków: `' -- ;`) nie wskazywało na obecność podatności. Mimo tego, na wszelki wypadek dokonano dalszych testów:
  
-Przy użyciu Burp Suite wychwycone zostało dokładne polecenie wysyłane do serwera. Polecenie to następnie zostało przeanalizowane przez sqlmap.
+Przy użyciu Burp Suite wychwycone zostało dokładne polecenie wysyłane do serwera. Polecenie to następnie zostało przeanalizowane za pomocą narzędzia sqlmap.
  
 <details>
-<summary>Wynik polecenia</summary>
+<summary>Wynik testu</summary>
    
 ```
 [16:17:09] [INFO] parsing HTTP request from '/home/kali/Desktop/sqlmap'
@@ -454,14 +458,13 @@ it is recommended to perform only basic UNION tests if there is not at least one
 ```
 </details>
  
-Walidacja formularza wydaje się być poprawna, ponieważ sqlmap nie wykazał, żadnych podatności.
+Walidacja danych przekazywanych w zapytaniu wydaje się być poprawna - narzędzie sqlmap nie wykazało żadnych podatności.
 
-Sprawdzono również inne strony. Nie znaleziono podatnych zapytań.
+Sprawdzono również wiele innych strony korzystających z zapytań. Podobnie jak wyszukiwarka główna, nie były one podatne.
 
 ## CSRF 
 
-W celu sprawdzenia występowania możliwości zagrożenia typu CSRF wykorzystane zostały dane konta administracyjnego. Stworzony został najbardziej podstawowy złośliwy plik, który na celu miał usunąć jedną ze stron. Następnie zasymulowana została sytuacja, w której użytkownik zalogowany na konto o uprawnieniach administratorskich otwiera złośliwy plik. 
-
+W celu sprawdzenia obecności zagrożenia CSRF wykorzystane zostały dane konta administracyjnego. Stworzony został prosty złośliwy plik HTML, który na celu miał usunąć jedną ze stron: 
 
 ```
 <!DOCTYPE html>
@@ -472,11 +475,11 @@ W celu sprawdzenia występowania możliwości zagrożenia typu CSRF wykorzystane
         </body>
  </html>
 ```
+Następnie zasymulowana została sytuacja, w której użytkownik zalogowany na konto o uprawnieniach administratorskich otwiera taką złośliwą stronę HTML. 
 
+Atak nie powodzi się ponieważ WordPress wykorzystuje tokeny, a w szczególności „number used once” - inaczej „nonce”. Jest on generowany przez stronę oraz wysyłany do klienta przez wysłaniem przez niego formularza. Nonce jest tworzony na bazie parametrów sesji użytkownika. Przy wykonywaniu poleceń m.in. usuwania zawartości obowiązkowym jest odesłanie posiadanej wartości nonce, ponieważ jego wartość przed wykonaniem zapytania jest porównywana z przechowywaną przez serwer. Atakujący nie posiada poprawnej wartości nonce, więc nie może podrobić prawidłowego zapytania.
 
-Atak nie powodzi się ponieważ WordPress wykorzystuję „number used onece” inaczej „nonce”, który jest generowany w przypadku WordPress’a co jakiś czas a tworzony jest na bazie wartości sesji użytkownika. Przy wykonywaniu poleceń usuwania obowiązkowym jest posiadanie określonej wartości noncesu, ponieważ jego wartość jest porównywana z prawdziwą przez serwer a później wykonywana.
-
-# Zagrożenia
+# Wykryte zagrożenia
 
 ## Jawna transmisja danych
 **Stopień zagrożenia:** Średni - CVSS 5.9 (Wektor: `CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:L/A:N`)
@@ -491,7 +494,7 @@ Atak nie powodzi się ponieważ WordPress wykorzystuję „number used onece”
 
 Jak widać, dane logowania nie są zabezpieczone.
 
-**Zalecenia:** Implementacja HTTPS, pozyskanie certyfikatu strony
+**Zalecenia:** Implementacja HTTPS
 
 ## Enumeracja użytkowników
 **Stopień zagrożenia:** Średni - CVSS 5.3 (Wektor: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N`)
@@ -629,7 +632,7 @@ wystarczy zakodować odpowiednio znak `<`, aby atak się powiódł. Wypróbowano
 
 W powyższym teście sprawdzone zostało również, czy wyświetli się zawartość ciasteczek. Ponieważ wyświetlają się one, oznacza to że możliwa jest kradzież danych użytkownika.
 
-**Zalecenia:** 
+**Zalecenia:** Dodanie do strony nagłówków [X-XSS-protection](https://www.webarxsecurity.com/https-security-headers-wp/) oraz [http-only](https://geekflare.com/wordpress-x-frame-options-httponly-cookie/) do ciasteczek (co wymaga wcześniejszego zaimplementowania HTTPS).
 
 ## Zdalne wykonywanie kodu (edycja motywów)
 **Stopień zagrożenia:** 5.5 - CVSS  (Wektor: `CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:C/C:L/I:L/A:L`)
@@ -642,15 +645,21 @@ W powyższym teście sprawdzone zostało również, czy wyświetli się zawarto�
 
 Następnie uruchomiono nasłuchiwane za pomocą modułu metasploit `multi/hanlder` oraz uruchomiono stronę 404. Poskutkowało to uzyskaniem sesji meterpretera na użytkowniku bez uprawnień root. Ze wzgledu na ograniczone możliwości webshelli PHP, niektóre funkcje meterpretera nie działają, przez co nie da się podwyższyć uprawnień.
 
-**Zalecenia:** Podatność ta jest znana przez organizację. Zapobiec jej można jedynie usuwając tą funkcjonalność, jednak powszechnie zalecanym rozwiązaniem jest ostrożne rozdawanie uprawnień oraz korzystanie z silnych haseł na kontach z dostępem do omawianego interfejsu.
+**Zalecenia:** Podatność ta jest znana przez organizację Wordpress. Zapobiec jej można jedynie usuwając tą funkcjonalność, jednak powszechnie zalecanym rozwiązaniem jest ostrożne rozdawanie uprawnień oraz korzystanie z silnych haseł na kontach z dostępem do omawianego interfejsu.
 
-## Wzór opisu zagrożenia (nazwa tutaj)
-**Stopień zagrożenia:**  - CVSS  (Wektor: `DoubleClickMe`)
+# Podsumowanie
 
-**Położenie:**
+Celem zbadania strony było sprawdzenie, w jakim stopniu we współczesnych rozwiązaniach występują szeroko znane podatności. 
+Jak pokazuje raport, środowisko jest odporne na nieco bardziej skomplikowane podatności, ale równocześnie podatne na bardzo podstawowe i toporne ataki. 
 
-**Opis:**
+W szczególności udało się przeprowadzić prosty atak o następującym przebiegu:
 
-**Koncepcja:**
+1. Enumeracja użytkowników
+2. Brute force logowania na konto administratora
+3. Umieszczenie webshella na łatwo dostępnej stronie
+4. Wykorzystanie webshella do uzyskania dostępu do maszyny
 
-**Zalecenia:**
+Znaczna część ze znalezionych podatności wynika ze złej konfiguracji środowiska; niezadbanie o bezpieczeństwo podczas procesu instalacji prowadzi do podatności na proste ataki, które mogą doprowadzić do kompromitacji elementu. Fakt ten podkreśla wagę edukacji na ten temat; w szczególności dobre byłoby nakierowanie użytkownika przez poradnik instalcji na poradniki utwardzania danego środowiska.
+
+Wykorzystywanie słabych haseł znacząco ułatwia ataki, a jak pokazują przykłady wspomnianych na początku botnetów, korzystanie z haseł domyślnych jest popularną praktyką.
+
