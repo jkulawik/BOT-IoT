@@ -661,5 +661,26 @@ W szczególności udało się przeprowadzić prosty atak o następującym przebi
 
 Znaczna część ze znalezionych podatności wynika ze złej konfiguracji środowiska; niezadbanie o bezpieczeństwo podczas procesu instalacji prowadzi do podatności na proste ataki, które mogą doprowadzić do kompromitacji elementu. Fakt ten podkreśla wagę edukacji na ten temat; w szczególności dobre byłoby nakierowanie użytkownika przez poradnik instalcji na poradniki utwardzania danego środowiska.
 
-Wykorzystywanie słabych haseł znacząco ułatwia ataki, a jak pokazują przykłady wspomnianych na początku botnetów, korzystanie z haseł domyślnych jest popularną praktyką.
+Wykorzystywanie słabych haseł znacząco ułatwia ataki, a jak pokazują przykłady wspomnianych na początku botnetów, korzystanie z haseł domyślnych jest popularną praktyką. Istotną uwagą jest tutaj, że wiele ze znalezionych podatności wynika jedynie z dostępu do konta administratora; oznacza to, że odpowiednio silne hasła oraz odpowiedzialne zarządzanie pozwoleniami jest w tym wypadku najważniejszym zabezpieczeniem.
 
+Wbudowany tester siły hasła jest dosyć dobrą wskazówką dla użytkownika. Poniżej przedstawiono przykład najprostszego "silnego" hasła przepuszczonego przez system:
+
+![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/shortest-strong-passwd.PNG)
+
+Strona podczas rejestracji sprawdza, czy użytkownik wykorzystuje silne hasło. Leniwy użytkownik może jednak obejść ten system dla własnej wygody:
+
+![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/new-user.PNG)
+
+Na powyższym obrazku należy również zwrócić uwagę na adres e-mail; wykorzystano tutaj e-mail tymczasowy, usługa która może być wykorzystywana do rejestrowania anonimowych, złośliwych kont. Na niektórych stronach (w szczególności społecznościowych) maile takie powinny być blokowane (zniechęcanie atakującego).
+
+Strona posiada również panel, który pozwala na monitorowanie jej zdrowia. 
+
+![alt text](https://github.com/jkulawik/BOT-IoT/blob/master/sitehealth.PNG)
+
+Zwraca ona uwagę na brak HTTPS; nie zawiera ona jednak żadnych informacji o dwóch "krytycznych" dla tego serwisu zagrożeń, czyli enumeracji użytkowników oraz brute-force'owaniu haseł (już po dokonaniu tego ataku). 
+
+## Wnioski
+
+Pomimo automatyzacji wielu zabezpieczeń oraz ich wbudowania w podstawowe pakiety, współczesne strony nadal mogą posiadać podstawowe błędy w konfiguracji. Dlatego też administratorzy powinni aktywnie interesować się bezpieczeństwem lub korzystać z usług pentesterów :)
+
+Projekt pokazał również, że najsłabszym ogniwem w bezpieczeństwie nadal (lub nawet bardziej niż kiedyś) jest człowiek. Mocne hasła są kluczowym elementem bezpieczeństwa; użytkownicy powinni być edukowani na ten temat - w szczególności ci z podwyższonymi uprawnieniami.
