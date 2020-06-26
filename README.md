@@ -1,9 +1,10 @@
 # Bezpieczeństwo IoT
-Repozytorium projektu z przedmiotu BOT. 
+Dokumentacja projektu z przedmiotu BOT (Bezpieczeństwo oprogramowania i testy penetracyjne). 
 
-Temat: bezpieczeństwo IoT. 
+Temat: Bezpieczeństwo IoT - Pentest współczesnej strony WWW działającej na wirtualnym Raspberry Pi.
 
 Grupa: J. Kulawik, W. Szałyga
+Semestr letni 2020
 
 # Cele projektu:
 - Zapoznanie się z dostępnymi gotowymi rozwiązaniami usług sieciowych w IoT
@@ -35,7 +36,7 @@ Zgodnie ze wspomnianym poniżej poradnikiem zostanie na nim zainstalowany serwer
 
 Można zadać sobie pytanie, dlaczego Linux, skoro mowa jest o IoT? Odpowiedź jest prosta - jest to system często używany w IoT, który jest w tej dziedzinie jednym z głównych problemów z bezpieczeństwem. Malware i botnety przez niego tworzone, takie jak [Mirai](https://en.wikipedia.org/wiki/Mirai_(malware)), [Remaiten](https://en.wikipedia.org/wiki/Remaiten), [BASHLITE](https://en.wikipedia.org/wiki/BASHLITE) czy [Linux.Darlloz](https://en.wikipedia.org/wiki/Linux.Darlloz) rozprzestrzeniały się po sieciach systemów wbudowanych korzystających z Linuksa. Wiele z nich wykorzystało niedbałość przy konfiguracji urządzeń, a w szczególności hasła domyślne i brak zabezpieczeń przeciw brute-force.
 
-> *Uwaga: Podczas trwania projektu odkryto technologię Docker oraz oparty na niej dedykowany dla IoT system balenaOS. Mechanizmy wykorzystywane przez Dockera zdają się być rozwiązaniem bardzo bezpiecznym, dlatego testy aplikacji instalowanych w kontenerze mogą być ciekawym tematem na przyszłe projekty.*
+> *Uwaga: Podczas trwania projektu zapoznano się z technologią Docker oraz opartym na niej dedykowanym dla IoT system balenaOS. Mechanizmy wykorzystywane przez Dockera zdają się być rozwiązaniem bardzo bezpiecznym, dlatego testy aplikacji instalowanych w kontenerze mogą być ciekawym tematem na przyszłe projekty.*
 
 Test będzie przeprowadzony w stylu greybox - siłą rzeczy znane są pewne szcegóły środowiska (w szcególności elementy konfiguracji sieciowej).
 Nie będzie wykorzystywana wiedza na temat haseł oraz loginów - żeby je wykorzystać, muszą zostać wydobyte w trakcie testu.
